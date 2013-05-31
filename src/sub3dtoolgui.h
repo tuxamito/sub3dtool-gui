@@ -21,6 +21,7 @@ private slots:
     void change3DModeSBS();
     void change3DModeTB();
     void change3DModeN3D();
+    void convert();
 
 private:
     Ui::sub3dtoolgui *ui;

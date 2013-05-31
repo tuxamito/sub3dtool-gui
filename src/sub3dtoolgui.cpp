@@ -97,3 +97,14 @@ void sub3dtoolgui::change3DModeN3D()
     ui->button3DSBS->setChecked(false);
     ui->button3DTB->setChecked(false);
 }
+
+void sub3dtoolgui::convert()
+{
+    QProcess tool;
+    QStringList arguments;
+
+    arguments << "-o " + ui->lineEditFileOut->text();
+    arguments << ui->lineEditFileIn->text();
+
+    tool.start(SUB3DTOOLNAME, arguments);
+}

@@ -311,6 +311,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonConvert</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>convert()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>415</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>233</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>initGui()</slot>
@@ -320,5 +336,6 @@
   <slot>change3DModeSBS()</slot>
   <slot>change3DModeTB()</slot>
   <slot>change3DModeN3D()</slot>
+  <slot>convert()</slot>
  </slots>
 </ui>
