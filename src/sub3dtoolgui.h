@@ -3,6 +3,8 @@
 
 #include <QWidget>
 
+#include "s3tdata.h"
+
 namespace Ui {
 class sub3dtoolgui;
 }
@@ -22,12 +24,20 @@ private slots:
     void change3DModeTB();
     void change3DModeN3D();
     void convert();
+    void filesChanged();
+    void setFontSize(QString size);
+    void setResolution(QString resolution);
+    void setFont(QString font);
 
 private:
     Ui::sub3dtoolgui *ui;
 
     int checkTool();
-    void initGui(bool toolFound);
+    void initGui();
+
+    bool _isStarted;
+    s3tData _data;
+    bool _toolFound;
 };
 
 #endif // SUB3DTOOLGUI_H

@@ -11,16 +11,18 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::sub3dtoolgui)
 {
+    _isStarted = false;
+
     ui->setupUi(this);
 
-    if(this->checkTool() < 0)
-    {
-        this->initGui(false);
-        QMessageBox::critical(this, "sub3dtool-gui", tr("No sub3dtool command found"));
-    }
-    else
-        this->initGui(true);
+    _toolFound = (this->checkTool() >= 0);
 
+    if(!_toolFound)
+        QMessageBox::critical(this, "sub3dtool-gui", tr("No sub3dtool command found"));
+
+    this->initGui();
+
+    _isStarted = true;
 }
 
 sub3dtoolgui::~sub3dtoolgui()
@@ -42,24 +44,50 @@ int sub3dtoolgui::checkTool()
     return 0;
 }
 
-void sub3dtoolgui::initGui(bool toolFound)
+void sub3dtoolgui::initGui()
 {
-    if(!toolFound)
+    ui->buttonConvert->setEnabled(_toolFound);
+
+    ui->lineEditFileIn->setText(_data.inFile);
+    ui->lineEditFileOut->setText(_data.outFile);
+
+    switch(_data.transformation3d)
     {
-        ui->buttonConvert->setEnabled(false);
+    case N3D:
+        ui->button3DSBS->setChecked(false);
+        ui->button3DTB->setChecked(false);
+        ui->button3DN3D->setChecked(true);
+        break;
+    case SBS:
+        ui->button3DSBS->setChecked(true);
+        ui->button3DTB->setChecked(false);
+        ui->button3DN3D->setChecked(false);
+        break;
+    case TB:
+        ui->button3DSBS->setChecked(false);
+        ui->button3DTB->setChecked(true);
+        ui->button3DN3D->setChecked(false);
+        break;
     }
 
-    char *defaultDir = getenv("HOME");
-    if(defaultDir != NULL)
-    {
-        ui->lineEditFileIn->setText(QString(defaultDir) + "/");
-        ui->lineEditFileOut->setText(QString(defaultDir) + "/");
-    }
-    else
-    {
-        ui->lineEditFileIn->setText("/");
-        ui->lineEditFileOut->setText("/");
-    }
+    QStringList resolutions;
+    resolutions << "3840x2160" <<"1920x1080" << "1280x720" << "720x576" << "720x480";
+    ui->comboResolution->addItems(resolutions);
+    ui->comboResolution->setCurrentIndex(ui->comboResolution->findText(_data.resolution));
+
+    QStringList fontSizes;
+    fontSizes << "144" << "118" << "96" << "78" << "64" << "52" << "42" << "34"
+              << "28" << "24" << "18" << "14";
+    ui->comboFontSize->addItems(fontSizes);
+    ui->comboFontSize->setCurrentIndex(ui->comboFontSize->findText(QString::number(_data.fontSize)));
+
+    ui->fontComboBox->setCurrentIndex(ui->fontComboBox->findText(_data.font));
+}
+
+void sub3dtoolgui::filesChanged()
+{
+    _data.inFile = ui->lineEditFileIn->text();
+    _data.outFile = ui->lineEditFileOut->text();
 }
 
 void sub3dtoolgui::getFileIn()
@@ -82,20 +110,41 @@ void sub3dtoolgui::getFileOut()
 
 void sub3dtoolgui::change3DModeSBS()
 {
+    _data.transformation3d = SBS;
     ui->button3DTB->setChecked(false);
     ui->button3DN3D->setChecked(false);
 }
 
 void sub3dtoolgui::change3DModeTB()
 {
+    _data.transformation3d = TB;
     ui->button3DSBS->setChecked(false);
     ui->button3DN3D->setChecked(false);
 }
 
 void sub3dtoolgui::change3DModeN3D()
 {
+    _data.transformation3d = N3D;
     ui->button3DSBS->setChecked(false);
     ui->button3DTB->setChecked(false);
+}
+
+void sub3dtoolgui::setFontSize(QString size)
+{
+    if(_isStarted)
+        _data.fontSize = size.toInt();
+}
+
+void sub3dtoolgui::setResolution(QString resolution)
+{
+    if(_isStarted)
+        _data.resolution = resolution;
+}
+
+void sub3dtoolgui::setFont(QString font)
+{
+    if(_isStarted)
+        _data.font = font;
 }
 
 void sub3dtoolgui::convert()
@@ -103,8 +152,14 @@ void sub3dtoolgui::convert()
     QProcess tool;
     QStringList arguments;
 
-    arguments << "-o " + ui->lineEditFileOut->text();
-    arguments << ui->lineEditFileIn->text();
+    arguments << "-o " + _data.outFile;
+    arguments << _data.inFile;
 
     tool.start(SUB3DTOOLNAME, arguments);
+
+    //if (!tool.waitForStarted())
+    //    return -2;
+
+    //if (!tool.waitForFinished())
+    //    return -3;
 }

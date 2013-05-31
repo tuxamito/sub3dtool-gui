@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>468</width>
+    <width>449</width>
     <height>395</height>
    </rect>
   </property>
@@ -110,9 +110,15 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox">
+         <widget class="QComboBox" name="comboResolution">
           <property name="editable">
            <bool>true</bool>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
+          </property>
+          <property name="maxVisibleItems">
+           <number>8</number>
           </property>
          </widget>
         </item>
@@ -129,10 +135,8 @@
         </item>
         <item>
          <widget class="QFontComboBox" name="fontComboBox">
-          <property name="currentFont">
-           <font>
-            <family>FreeSans</family>
-           </font>
+          <property name="fontFilters">
+           <set>QFontComboBox::AllFonts</set>
           </property>
          </widget>
         </item>
@@ -144,9 +148,12 @@
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboBox_2">
+         <widget class="QComboBox" name="comboFontSize">
           <property name="editable">
            <bool>true</bool>
+          </property>
+          <property name="currentIndex">
+           <number>-1</number>
           </property>
          </widget>
         </item>
@@ -327,6 +334,134 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>lineEditFileIn</sender>
+   <signal>editingFinished()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>filesChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEditFileOut</sender>
+   <signal>editingFinished()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>filesChanged()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>116</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboFontSize</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setFontSize(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboFontSize</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setFontSize(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>384</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboResolution</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setResolution(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>330</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboResolution</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setResolution(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>330</x>
+     <y>255</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fontComboBox</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setFont(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fontComboBox</sender>
+   <signal>editTextChanged(QString)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setFont(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>197</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>initGui()</slot>
@@ -337,5 +472,9 @@
   <slot>change3DModeTB()</slot>
   <slot>change3DModeN3D()</slot>
   <slot>convert()</slot>
+  <slot>filesChanged()</slot>
+  <slot>setFontSize(QString)</slot>
+  <slot>setResolution(QString)</slot>
+  <slot>setFont(QString)</slot>
  </slots>
 </ui>
