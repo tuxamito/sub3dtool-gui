@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>images/logo_N3D.png</file>
+        <file>images/logo_SBS.png</file>
+        <file>images/logo_TB.png</file>
+        <file>images/logo_sub3dtool.png</file>
+    </qresource>
+</RCC>

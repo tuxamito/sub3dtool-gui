@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>449</width>
-    <height>453</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,34 +100,91 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="1">
        <widget class="QPushButton" name="button3DTB">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>TB</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="sub3dtool-gui-images.qrc">
+          <normaloff>:/icons/images/logo_TB.png</normaloff>:/icons/images/logo_TB.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>96</width>
+          <height>64</height>
+         </size>
         </property>
         <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
        <widget class="QPushButton" name="button3DN3D">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>N3D</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="sub3dtool-gui-images.qrc">
+          <normaloff>:/icons/images/logo_N3D.png</normaloff>:/icons/images/logo_N3D.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>96</width>
+          <height>64</height>
+         </size>
         </property>
         <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="flat">
          <bool>true</bool>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="button3DSBS">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
-         <string>SBS</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="sub3dtool-gui-images.qrc">
+          <normaloff>:/icons/images/logo_SBS.png</normaloff>:/icons/images/logo_SBS.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>96</width>
+          <height>64</height>
+         </size>
         </property>
         <property name="checkable">
          <bool>true</bool>
         </property>
         <property name="checked">
          <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -293,7 +350,9 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="sub3dtool-gui-images.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>buttonExit</sender>

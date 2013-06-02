@@ -20,3 +20,6 @@ HEADERS  += sub3dtoolgui.h \
     s3tdata.h
 
 FORMS    += sub3dtoolgui.ui
+
+RESOURCES += \
+    sub3dtool-gui-images.qrc
