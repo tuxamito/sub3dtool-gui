@@ -1,3 +1,22 @@
+/****************************************************************************/
+/*  Copyright (C) 2013 Daniel Rubio Bonilla <danielrubiob_at_gmail_._com>   */
+/*                                                                          */
+/*  This file is part of sub3dtool-gui.                                     */
+/*                                                                          */
+/*  sub3dtool-gui is free software: you can redistribute it and/or modify   */
+/*  it under the terms of the GNU General Public License as published by    */
+/*  the Free Software Foundation, either version 3 of the License, or       */
+/*  (at your option) any later version.                                     */
+/*                                                                          */
+/*  sub3dtool-gui is distributed in the hope that it will be useful,        */
+/*  but WITHOUT ANY WARRANTY; without even the implied warranty of          */
+/*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the            */
+/*  GNU General Public License for more details.                            */
+/*                                                                          */
+/*  You should have received a copy of the GNU General Public License       */
+/*  along with sub3dtool-gui. If not, see <http://www.gnu.org/licenses/>.   */
+/****************************************************************************/
+
 #include "sub3dtoolgui.h"
 #include "ui_sub3dtoolgui.h"
 
@@ -6,6 +25,8 @@
 #include <QFileDialog>
 
 #define SUB3DTOOLNAME "sub3dtool"
+#define MYNAME "sub3dtool-gui"
+#define VERSION "0.0.0"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -18,7 +39,7 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     _toolFound = (this->checkTool() >= 0);
 
     if(!_toolFound)
-        QMessageBox::critical(this, "sub3dtool-gui", tr("No sub3dtool command found"));
+        QMessageBox::critical(this, MYNAME, tr("No sub3dtool command found"));
 
     this->initGui();
 
@@ -47,6 +68,10 @@ int sub3dtoolgui::checkTool()
 void sub3dtoolgui::initGui()
 {
     ui->buttonConvert->setEnabled(_toolFound);
+    if(_toolFound)
+        ui->labelInfo->setText(QString(SUB3DTOOLNAME) + QString(" ") + tr("found"));
+    else
+        ui->labelInfo->setText(QString(SUB3DTOOLNAME) + QString(" ") + tr("not found"));
 
     ui->lineEditFileIn->setText(_data.inFile);
     ui->lineEditFileOut->setText(_data.outFile);
@@ -165,25 +190,43 @@ void sub3dtoolgui::convert()
         break;
     }
 
-    arguments << "--screen " + _data.resolution;
+    arguments << "--screen";
+    arguments << _data.resolution;
+    arguments << "--font";
+    arguments << _data.font;
+    arguments << "--fontsize";
+    arguments << QString::number(_data.fontSize);
 
-    arguments << "--font " + _data.font;
-
-    arguments << "--fontsize" + QString::number(_data.fontSize);
-
-    arguments << "-o " + _data.outFile;
+    arguments << "-o";
+    arguments << _data.outFile;
     arguments << _data.inFile;
 
     tool.start(SUB3DTOOLNAME, arguments);
 
     if (!tool.waitForStarted())
     {
-        //ERROR starting the tool
+        QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool"));
+        return;
     }
 
 
     if (!tool.waitForFinished())
     {
-        //ERROR during execution of the tool
+        QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool"));
+        return;
     }
+
+    int code = tool.exitCode();
+
+    if(code)
+        QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
+    else
+        QMessageBox::information(this, MYNAME, tr("Subtitles converted"));
+}
+
+void sub3dtoolgui::showAbout()
+{
+    QString str;
+    str = QString("%1 %2\n(c) Daniel Rubio Bonilla\n<danielrubiob@gmail.com>\nGPL v3").arg(MYNAME).arg(VERSION);
+    QMessageBox::about(this, MYNAME, str);
 }

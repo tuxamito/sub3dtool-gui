@@ -7,13 +7,53 @@
     <x>0</x>
     <y>0</y>
     <width>449</width>
-    <height>395</height>
+    <height>453</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>sub3dtoolgui</string>
   </property>
+  <property name="locale">
+   <locale language="English" country="UnitedStates"/>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Status:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelInfo">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonAbout">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>About...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -57,21 +97,8 @@
      <property name="title">
       <string>3D Options</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QPushButton" name="button3DSBS">
-        <property name="text">
-         <string>SBS</string>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="1">
        <widget class="QPushButton" name="button3DTB">
         <property name="text">
          <string>TB</string>
@@ -81,13 +108,56 @@
         </property>
        </widget>
       </item>
-      <item>
+      <item row="1" column="2">
        <widget class="QPushButton" name="button3DN3D">
         <property name="text">
          <string>N3D</string>
         </property>
         <property name="checkable">
          <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="button3DSBS">
+        <property name="text">
+         <string>SBS</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Side by Side</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Top - Bottom</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>No 3D</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -465,6 +535,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAbout</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>showAbout()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>396</x>
+     <y>23</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>224</x>
+     <y>208</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>initGui()</slot>
@@ -479,5 +565,6 @@
   <slot>setFontSize(QString)</slot>
   <slot>setResolution(QString)</slot>
   <slot>setFont(QString)</slot>
+  <slot>showAbout()</slot>
  </slots>
 </ui>
