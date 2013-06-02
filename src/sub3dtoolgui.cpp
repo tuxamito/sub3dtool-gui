@@ -152,14 +152,38 @@ void sub3dtoolgui::convert()
     QProcess tool;
     QStringList arguments;
 
+    switch(_data.transformation3d)
+    {
+    case N3D:
+        arguments << "--no3d";
+        break;
+    case SBS:
+        arguments << "--3dsbs";
+        break;
+    case TB:
+        arguments << "--3dtb";
+        break;
+    }
+
+    arguments << "--screen " + _data.resolution;
+
+    arguments << "--font " + _data.font;
+
+    arguments << "--fontsize" + QString::number(_data.fontSize);
+
     arguments << "-o " + _data.outFile;
     arguments << _data.inFile;
 
     tool.start(SUB3DTOOLNAME, arguments);
 
-    //if (!tool.waitForStarted())
-    //    return -2;
+    if (!tool.waitForStarted())
+    {
+        //ERROR starting the tool
+    }
 
-    //if (!tool.waitForFinished())
-    //    return -3;
+
+    if (!tool.waitForFinished())
+    {
+        //ERROR during execution of the tool
+    }
 }
