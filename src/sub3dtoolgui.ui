@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>sub3dtoolgui</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="sub3dtool-gui-images.qrc">
+    <normaloff>:/icons/images/logo_sub3dtool.png</normaloff>:/icons/images/logo_sub3dtool.png</iconset>
+  </property>
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
