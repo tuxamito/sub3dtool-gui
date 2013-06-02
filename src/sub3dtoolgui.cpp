@@ -135,23 +135,38 @@ void sub3dtoolgui::getFileOut()
 
 void sub3dtoolgui::change3DModeSBS()
 {
-    _data.transformation3d = SBS;
-    ui->button3DTB->setChecked(false);
-    ui->button3DN3D->setChecked(false);
+    if(_data.transformation3d == SBS)
+        ui->button3DSBS->setChecked(true);
+    else
+    {
+        _data.transformation3d = SBS;
+        ui->button3DTB->setChecked(false);
+        ui->button3DN3D->setChecked(false);
+    }
 }
 
 void sub3dtoolgui::change3DModeTB()
 {
-    _data.transformation3d = TB;
-    ui->button3DSBS->setChecked(false);
-    ui->button3DN3D->setChecked(false);
+    if(_data.transformation3d == TB)
+        ui->button3DTB->setChecked(true);
+    else
+    {
+        _data.transformation3d = TB;
+        ui->button3DSBS->setChecked(false);
+        ui->button3DN3D->setChecked(false);
+    }
 }
 
 void sub3dtoolgui::change3DModeN3D()
 {
-    _data.transformation3d = N3D;
-    ui->button3DSBS->setChecked(false);
-    ui->button3DTB->setChecked(false);
+    if(_data.transformation3d == N3D)
+        ui->button3DN3D->setChecked(true);
+    else
+    {
+        _data.transformation3d = N3D;
+        ui->button3DSBS->setChecked(false);
+        ui->button3DTB->setChecked(false);
+    }
 }
 
 void sub3dtoolgui::setFontSize(QString size)
