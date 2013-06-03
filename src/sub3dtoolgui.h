@@ -48,6 +48,10 @@ private slots:
     void setResolution(QString resolution);
     void setFont(QString font);
     void showAbout();
+    void exit();
+
+signals:
+    void closeProgram();
 
 private:
     Ui::sub3dtoolgui *ui;

@@ -17,13 +17,13 @@
 /*  along with sub3dtool-gui. If not, see <http://www.gnu.org/licenses/>.   */
 /****************************************************************************/
 
-#include "sub3dtoolgui.h"
+#include "mainwindow.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    sub3dtoolgui w;
+    MainWindow w;
     w.show();
     
     return a.exec();

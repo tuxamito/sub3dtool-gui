@@ -35,6 +35,7 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     _isStarted = false;
 
     ui->setupUi(this);
+
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     _toolFound = (this->checkTool() >= 0);
@@ -271,4 +272,9 @@ void sub3dtoolgui::showAbout()
     QString str;
     str = QString("%1 %2\n(c) Daniel Rubio Bonilla\n<danielrubiob@gmail.com>\nGPL v3").arg(MYNAME).arg(VERSION);
     QMessageBox::about(this, MYNAME, str);
+}
+
+void sub3dtoolgui::exit()
+{
+    emit closeProgram();
 }

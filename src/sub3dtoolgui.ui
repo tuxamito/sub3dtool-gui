@@ -403,7 +403,7 @@
    <sender>buttonExit</sender>
    <signal>clicked()</signal>
    <receiver>sub3dtoolgui</receiver>
-   <slot>close()</slot>
+   <slot>exit()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>324</x>
@@ -657,6 +657,7 @@
   </connection>
  </connections>
  <slots>
+  <signal>closeProgram()</signal>
   <slot>initGui()</slot>
   <slot>checkTool()</slot>
   <slot>getFileOut()</slot>
@@ -670,5 +671,6 @@
   <slot>setResolution(QString)</slot>
   <slot>setFont(QString)</slot>
   <slot>showAbout()</slot>
+  <slot>exit()</slot>
  </slots>
 </ui>
