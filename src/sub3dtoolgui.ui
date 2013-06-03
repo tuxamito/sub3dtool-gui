@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>449</width>
-    <height>500</height>
+    <width>462</width>
+    <height>514</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>sub3dtoolgui</string>
@@ -70,7 +76,17 @@
       <item>
        <widget class="QPushButton" name="buttonOpenFileIn">
         <property name="text">
-         <string>F</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="sub3dtool-gui-images.qrc">
+          <normaloff>:/icons/images/folder-documents-icon.png</normaloff>:/icons/images/folder-documents-icon.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -89,7 +105,17 @@
       <item>
        <widget class="QPushButton" name="buttonOpenFileOut">
         <property name="text">
-         <string>F</string>
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="sub3dtool-gui-images.qrc">
+          <normaloff>:/icons/images/folder-documents-icon.png</normaloff>:/icons/images/folder-documents-icon.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>24</width>
+          <height>24</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -193,7 +219,7 @@
        </widget>
       </item>
       <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
+       <widget class="QLabel" name="label3DSBS">
         <property name="text">
          <string>Side by Side</string>
         </property>
@@ -203,7 +229,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLabel" name="label_5">
+       <widget class="QLabel" name="label3DTB">
         <property name="text">
          <string>Top - Bottom</string>
         </property>
@@ -213,7 +239,7 @@
        </widget>
       </item>
       <item row="0" column="2">
-       <widget class="QLabel" name="label_6">
+       <widget class="QLabel" name="label3DN3D">
         <property name="text">
          <string>No 3D</string>
         </property>
@@ -235,6 +261,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="QLabel" name="label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Screen Resolution:</string>
           </property>
@@ -266,6 +298,15 @@
         </item>
         <item>
          <widget class="QFontComboBox" name="fontComboBox">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="editable">
+           <bool>true</bool>
+          </property>
           <property name="fontFilters">
            <set>QFontComboBox::AllFonts</set>
           </property>

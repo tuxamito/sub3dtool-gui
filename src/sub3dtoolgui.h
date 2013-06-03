@@ -58,6 +58,8 @@ private:
     bool _isStarted;
     s3tData _data;
     bool _toolFound;
+    QFont _fontBold;
+    QFont _fontNotBold;
 };
 
 #endif // SUB3DTOOLGUI_H

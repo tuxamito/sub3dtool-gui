@@ -35,6 +35,7 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     _isStarted = false;
 
     ui->setupUi(this);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 
     _toolFound = (this->checkTool() >= 0);
 
@@ -76,22 +77,36 @@ void sub3dtoolgui::initGui()
     ui->lineEditFileIn->setText(_data.inFile);
     ui->lineEditFileOut->setText(_data.outFile);
 
+    _fontBold = ui->label3DSBS->font();
+    _fontBold.setBold(true);
+    _fontNotBold = ui->label3DSBS->font();
+    _fontNotBold.setBold(false);
+
     switch(_data.transformation3d)
     {
     case N3D:
         ui->button3DSBS->setChecked(false);
         ui->button3DTB->setChecked(false);
         ui->button3DN3D->setChecked(true);
+        ui->label3DSBS->setFont(_fontNotBold);
+        ui->label3DTB->setFont(_fontNotBold);
+        ui->label3DN3D->setFont(_fontBold);
         break;
     case SBS:
         ui->button3DSBS->setChecked(true);
         ui->button3DTB->setChecked(false);
         ui->button3DN3D->setChecked(false);
+        ui->label3DSBS->setFont(_fontBold);
+        ui->label3DTB->setFont(_fontNotBold);
+        ui->label3DN3D->setFont(_fontNotBold);
         break;
     case TB:
         ui->button3DSBS->setChecked(false);
         ui->button3DTB->setChecked(true);
         ui->button3DN3D->setChecked(false);
+        ui->label3DSBS->setFont(_fontNotBold);
+        ui->label3DTB->setFont(_fontBold);
+        ui->label3DN3D->setFont(_fontNotBold);
         break;
     }
 
@@ -126,7 +141,7 @@ void sub3dtoolgui::getFileIn()
 
 void sub3dtoolgui::getFileOut()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, tr("Converted Subtitles"), ui->lineEditFileOut->text(),
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Converted Subtitles"), ui->lineEditFileOut->text(),
                                                     tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 
     if(fileName != "")
@@ -142,6 +157,10 @@ void sub3dtoolgui::change3DModeSBS()
         _data.transformation3d = SBS;
         ui->button3DTB->setChecked(false);
         ui->button3DN3D->setChecked(false);
+
+        ui->label3DSBS->setFont(_fontBold);
+        ui->label3DTB->setFont(_fontNotBold);
+        ui->label3DN3D->setFont(_fontNotBold);
     }
 }
 
@@ -154,6 +173,10 @@ void sub3dtoolgui::change3DModeTB()
         _data.transformation3d = TB;
         ui->button3DSBS->setChecked(false);
         ui->button3DN3D->setChecked(false);
+
+        ui->label3DSBS->setFont(_fontNotBold);
+        ui->label3DTB->setFont(_fontBold);
+        ui->label3DN3D->setFont(_fontNotBold);
     }
 }
 
@@ -166,6 +189,10 @@ void sub3dtoolgui::change3DModeN3D()
         _data.transformation3d = N3D;
         ui->button3DSBS->setChecked(false);
         ui->button3DTB->setChecked(false);
+
+        ui->label3DSBS->setFont(_fontNotBold);
+        ui->label3DTB->setFont(_fontNotBold);
+        ui->label3DN3D->setFont(_fontBold);
     }
 }
 
