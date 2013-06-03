@@ -37,7 +37,15 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     ui->setupUi(this);
 
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+}
 
+sub3dtoolgui::~sub3dtoolgui()
+{
+    delete ui;
+}
+
+void sub3dtoolgui::init()
+{
     _toolFound = (this->checkTool() >= 0);
 
     if(!_toolFound)
@@ -46,11 +54,6 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     this->initGui();
 
     _isStarted = true;
-}
-
-sub3dtoolgui::~sub3dtoolgui()
-{
-    delete ui;
 }
 
 int sub3dtoolgui::checkTool()
@@ -71,9 +74,9 @@ void sub3dtoolgui::initGui()
 {
     ui->buttonConvert->setEnabled(_toolFound);
     if(_toolFound)
-        ui->labelInfo->setText(QString(SUB3DTOOLNAME) + QString(" ") + tr("found"));
+        emit(newStatus(QString(SUB3DTOOLNAME) + QString(" ") + tr("found")));
     else
-        ui->labelInfo->setText(QString(SUB3DTOOLNAME) + QString(" ") + tr("not found"));
+        emit(newStatus(QString(SUB3DTOOLNAME) + QString(" ") + tr("not found")));
 
     ui->lineEditFileIn->setText(_data.inFile);
     ui->lineEditFileOut->setText(_data.outFile);
@@ -133,6 +136,8 @@ void sub3dtoolgui::filesChanged()
 
 void sub3dtoolgui::getFileIn()
 {
+    emit(newStatus("bbb"));
+
     QString fileName = QFileDialog::getOpenFileName(this, tr("Original Subtitles"), ui->lineEditFileIn->text(),
                                                     tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 

@@ -35,6 +35,7 @@ class sub3dtoolgui : public QWidget
 public:
     explicit sub3dtoolgui(QWidget *parent = 0);
     ~sub3dtoolgui();
+    void init();
 
 private slots:
     void getFileIn();
@@ -52,6 +53,7 @@ private slots:
 
 signals:
     void closeProgram();
+    void newStatus(QString);
 
 private:
     Ui::sub3dtoolgui *ui;
