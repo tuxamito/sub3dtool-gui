@@ -7,5 +7,5 @@ https://code.google.com/p/sub3dtool/
 
 Build:
 $ cd src
-$ qmake -project sub3dtool-gui.pro
+$ qmake
 $ make
