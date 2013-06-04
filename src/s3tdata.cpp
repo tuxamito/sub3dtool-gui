@@ -27,6 +27,22 @@
 #define DEFFONT "FreeSans"
 #define DEFRESOLUTION "1920x1080"
 
+#define DEFCOLORPRIMARYR 0xFF
+#define DEFCOLORPRIMARYG 0xFF
+#define DEFCOLORPRIMARYB 0xFA
+
+#define DEFCOLORSECONDARYR 0xFF
+#define DEFCOLORSECONDARYG 0xFF
+#define DEFCOLORSECONDARYB 0xFC
+
+#define DEFCOLOROUTLINER 0x00
+#define DEFCOLOROUTLINEG 0x00
+#define DEFCOLOROUTLINEB 0x00
+
+#define DEFCOLORBACKR 0x00
+#define DEFCOLORBACKG 0x00
+#define DEFCOLORBACKB 0x00
+
 s3tData::s3tData()
 {
     transformation3d = N3D;
@@ -48,9 +64,26 @@ s3tData::s3tData()
     fontSize = DEFFONTSIZE;
 
     alignment = DEFALIGNMENT;
-    int marginL = DEFMARGINL;
-    int marginR = DEFMARGINR;
-    int marginV = DEFMARGINV;
+
+    marginL = DEFMARGINL;
+    marginR = DEFMARGINR;
+    marginV = DEFMARGINV;
+
+    cPrimary.r = DEFCOLORPRIMARYR;
+    cPrimary.g = DEFCOLORPRIMARYG;
+    cPrimary.b = DEFCOLORPRIMARYB;
+
+    cSecondary.r = DEFCOLORSECONDARYR;
+    cSecondary.g = DEFCOLORSECONDARYG;
+    cSecondary.b = DEFCOLORSECONDARYB;
+
+    cOutline.r = DEFCOLOROUTLINER;
+    cOutline.g = DEFCOLOROUTLINEG;
+    cOutline.b = DEFCOLOROUTLINEB;
+
+    cBack.r = DEFCOLORBACKR;
+    cBack.g = DEFCOLORBACKG;
+    cBack.b = DEFCOLORBACKB;
 }
 
 s3tData::~s3tData()

@@ -286,6 +286,9 @@ void sub3dtoolgui::showAdvance()
 {
     sub3dtoolguiAdvance *nw;
     nw = new sub3dtoolguiAdvance();
+
+    nw->shareData(&_data);
+
     nw->setWindowModality(Qt::ApplicationModal);
     nw->show();
 }

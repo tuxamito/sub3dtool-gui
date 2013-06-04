@@ -26,6 +26,13 @@ enum type3d {N3D, SBS, TB};
 
 enum alignment3d {TL, T, TR, L, C, R, BL, B, BR};
 
+struct s3tColor
+{
+    int r;
+    int g;
+    int b;
+};
+
 class s3tData
 {
 public:
@@ -43,6 +50,11 @@ public:
     int marginL;
     int marginR;
     int marginV;
+
+    struct s3tColor cPrimary;
+    struct s3tColor cSecondary;
+    struct s3tColor cOutline;
+    struct s3tColor cBack;
 };
 
 #endif // S3TDATA_H
