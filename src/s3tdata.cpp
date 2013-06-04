@@ -19,6 +19,14 @@
 
 #include "s3tdata.h"
 
+#define DEFMARGINL 10
+#define DEFMARGINR 10
+#define DEFMARGINV 0
+#define DEFALIGNMENT B
+#define DEFFONTSIZE 64
+#define DEFFONT "FreeSans"
+#define DEFRESOLUTION "1920x1080"
+
 s3tData::s3tData()
 {
     transformation3d = N3D;
@@ -35,9 +43,14 @@ s3tData::s3tData()
         outFile = "/";
     }
 
-    resolution = "1920x1080";
-    font = "FreeSans";
-    fontSize = 64;
+    resolution = DEFRESOLUTION;
+    font = DEFFONT;
+    fontSize = DEFFONTSIZE;
+
+    alignment = DEFALIGNMENT;
+    int marginL = DEFMARGINL;
+    int marginR = DEFMARGINR;
+    int marginV = DEFMARGINV;
 }
 
 s3tData::~s3tData()

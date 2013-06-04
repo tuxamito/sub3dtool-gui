@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>449</width>
+    <width>462</width>
     <height>479</height>
    </rect>
   </property>
@@ -310,9 +310,9 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="QPushButton" name="buttonAdvance">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="text">
            <string>Advance...</string>
@@ -631,6 +631,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAdvance</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>showAdvance()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>239</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>closeProgram()</signal>
@@ -648,5 +664,6 @@
   <slot>setFont(QString)</slot>
   <slot>showAbout()</slot>
   <slot>exit()</slot>
+  <slot>showAdvance()</slot>
  </slots>
 </ui>

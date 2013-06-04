@@ -24,9 +24,12 @@
 #include <QMessageBox>
 #include <QFileDialog>
 
+#include "sub3dtoolguiadvance.h"
+
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
 #define VERSION "0.0.0"
+#define DATE "04.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -277,6 +280,14 @@ void sub3dtoolgui::showAbout()
     QString str;
     str = QString("%1 %2\n(c) Daniel Rubio Bonilla\n<danielrubiob@gmail.com>\nGPL v3").arg(MYNAME).arg(VERSION);
     QMessageBox::about(this, MYNAME, str);
+}
+
+void sub3dtoolgui::showAdvance()
+{
+    sub3dtoolguiAdvance *nw;
+    nw = new sub3dtoolguiAdvance();
+    nw->setWindowModality(Qt::ApplicationModal);
+    nw->show();
 }
 
 void sub3dtoolgui::exit()

@@ -15,14 +15,17 @@ TEMPLATE = app
 SOURCES += main.cpp\
         sub3dtoolgui.cpp \
     s3tdata.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    sub3dtoolguiadvance.cpp
 
 HEADERS  += sub3dtoolgui.h \
     s3tdata.h \
-    mainwindow.h
+    mainwindow.h \
+    sub3dtoolguiadvance.h
 
 FORMS    += sub3dtoolgui.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    sub3dtoolguiadvance.ui
 
 RESOURCES += \
     sub3dtool-gui-images.qrc

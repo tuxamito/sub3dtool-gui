@@ -24,6 +24,8 @@
 
 enum type3d {N3D, SBS, TB};
 
+enum alignment3d {TL, T, TR, L, C, R, BL, B, BR};
+
 class s3tData
 {
 public:
@@ -36,6 +38,11 @@ public:
     QString resolution;
     QString font;
     int fontSize;
+
+    alignment3d alignment;
+    int marginL;
+    int marginR;
+    int marginV;
 };
 
 #endif // S3TDATA_H

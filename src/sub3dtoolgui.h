@@ -49,6 +49,7 @@ private slots:
     void setResolution(QString resolution);
     void setFont(QString font);
     void showAbout();
+    void showAdvance();
     void exit();
 
 signals:
