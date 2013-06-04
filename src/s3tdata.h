@@ -26,6 +26,8 @@ enum type3d {N3D, SBS, TB};
 
 enum alignment3d {TL, T, TR, L, C, R, BL, B, BR};
 
+enum border3d {bShadow, bBox};
+
 struct s3tColor
 {
     int r;
@@ -47,9 +49,15 @@ public:
     int fontSize;
 
     alignment3d alignment;
+
     int marginL;
     int marginR;
     int marginV;
+
+    int outline;
+    int shadow;
+
+    border3d border;
 
     struct s3tColor cPrimary;
     struct s3tColor cSecondary;

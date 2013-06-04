@@ -248,6 +248,78 @@ void sub3dtoolgui::convert()
     arguments << "--fontsize";
     arguments << QString::number(_data.fontSize);
 
+
+    arguments << "--color-primary";
+    arguments << "0x" + QString::number(_data.cPrimary.r, 16) +
+                 QString::number(_data.cPrimary.g, 16) + QString::number(_data.cPrimary.b, 16);
+
+    arguments << "--color-2nd";
+    arguments << "0x" + QString::number(_data.cSecondary.r, 16) +
+                 QString::number(_data.cSecondary.g, 16) + QString::number(_data.cSecondary.b, 16);
+
+    arguments << "--color-outline";
+    arguments << "0x" + QString::number(_data.cOutline.r, 16) +
+                 QString::number(_data.cOutline.g, 16) + QString::number(_data.cOutline.b, 16);
+
+    arguments << "--color-back";
+    arguments << "0x" + QString::number(_data.cBack.r, 16) +
+                 QString::number(_data.cBack.g, 16) + QString::number(_data.cBack.b, 16);
+
+    arguments << "--outline";
+    arguments << QString::number(_data.outline);
+
+    arguments << "--shadow";
+    arguments << QString::number(_data.shadow);
+
+    switch(_data.alignment)
+    {
+    case TL:
+        arguments << "--align-top";
+        arguments << "--align-left";
+        break;
+    case T:
+        arguments << "--align-top";
+        arguments << "--align-center";
+        break;
+    case TR:
+        arguments << "--align-top";
+        arguments << "--align-right";
+        break;
+    case L:
+        arguments << "--align-middle";
+        arguments << "--align-left";
+        break;
+    case C:
+        arguments << "--align-middle";
+        arguments << "--align-center";
+        break;
+    case R:
+        arguments << "--align-middle";
+        arguments << "--align-right";
+        break;
+    case BL:
+        arguments << "--align-bottom";
+        arguments << "--align-left";
+        break;
+    case B:
+        arguments << "--align-bottom";
+        arguments << "--align-center";
+        break;
+    case BR:
+        arguments << "--align-bottom";
+        arguments << "--align-right";
+        break;
+    default:
+        break;
+    }
+
+    arguments << "--margin-left";
+    arguments << QString::number(_data.marginL);
+    arguments << "--margin-right";
+    arguments << QString::number(_data.marginR);
+    arguments << "--margin-vertical";
+    arguments << QString::number(_data.marginV);
+
     arguments << "-o";
     arguments << _data.outFile;
     arguments << _data.inFile;

@@ -52,7 +52,9 @@ private slots:
 
 private:
     void setGUI();
+    void modifyData();
     void setLineEditColor(QLineEdit *line, struct s3tColor *color);
+    struct s3tColor getLineEditColor(QLineEdit *line);
 
     Ui::sub3dtoolguiAdvance *ui;
 

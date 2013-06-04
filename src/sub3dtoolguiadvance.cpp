@@ -45,6 +45,7 @@ sub3dtoolguiAdvance::~sub3dtoolguiAdvance()
 
 void sub3dtoolguiAdvance::accept()
 {
+    this->modifyData();
     this->close();
 }
 
@@ -55,7 +56,7 @@ void sub3dtoolguiAdvance::cancel()
 
 void sub3dtoolguiAdvance::reset()
 {
-
+    this->setGUI();
 }
 
 void sub3dtoolguiAdvance::changeColorPrimary()
@@ -165,10 +166,120 @@ void sub3dtoolguiAdvance::setLineEditColor(QLineEdit *line, struct s3tColor *col
     line->setPalette(pal);
 }
 
+struct s3tColor sub3dtoolguiAdvance::getLineEditColor(QLineEdit *line)
+{
+    struct s3tColor c;
+    QPalette pal = line->palette();
+    QColor _c = pal.color(line->backgroundRole());
+
+    c.r = _c.red();
+    c.g = _c.green();
+    c.b = _c.blue();
+
+    return c;
+}
+
 void sub3dtoolguiAdvance::setGUI()
 {
+    if(_data == NULL)
+        return;
+
     this->setLineEditColor(ui->lineColorPrimary, &_data->cPrimary);
     this->setLineEditColor(ui->lineColorSecondary, &_data->cSecondary);
     this->setLineEditColor(ui->lineColorOutline, &_data->cOutline);
     this->setLineEditColor(ui->lineColorBack, &_data->cBack);
+
+    ui->spinMarginLeft->setValue(_data->marginL);
+    ui->spinMarginRight->setValue(_data->marginR);
+    ui->spinMarginVertical->setValue(_data->marginV);
+
+    ui->spinOutline->setValue(_data->outline);
+    ui->spinShadow->setValue(_data->shadow);
+
+    switch(_data->alignment)
+    {
+    case TL:
+        ui->radioAlignTL->setChecked(true);
+        break;
+    case T:
+        ui->radioAlignT->setChecked(true);
+        break;
+    case TR:
+        ui->radioAlignTR->setChecked(true);
+        break;
+    case L:
+        ui->radioAlignL->setChecked(true);
+        break;
+    case C:
+        ui->radioAlignC->setChecked(true);
+        break;
+    case R:
+        ui->radioAlignR->setChecked(true);
+        break;
+    case BL:
+        ui->radioAlignBL->setChecked(true);
+        break;
+    case B:
+        ui->radioAlignB->setChecked(true);
+        break;
+    case BR:
+        ui->radioAlignBR->setChecked(true);
+        break;
+    default:
+        break;
+    }
+
+    switch(_data->border)
+    {
+    case bShadow:
+        ui->radioBorderShadow->setChecked(true);
+        break;
+    case bBox:
+        ui->radioBorderBox->setChecked(true);
+        break;
+    default:
+        break;
+    }
+}
+
+void sub3dtoolguiAdvance::modifyData()
+{
+    if(_data == NULL)
+        return;
+
+    _data->cPrimary = getLineEditColor(ui->lineColorPrimary);
+    _data->cSecondary = getLineEditColor(ui->lineColorSecondary);
+    _data->cOutline = getLineEditColor(ui->lineColorOutline);
+    _data->cBack = getLineEditColor(ui->lineColorBack);
+
+    _data->marginL = ui->spinMarginLeft->value();
+    _data->marginR = ui->spinMarginRight->value();
+    _data->marginV = ui->spinMarginVertical->value();
+
+    _data->outline = ui->spinOutline->value();
+    _data->shadow = ui->spinShadow->value();
+
+    if(ui->radioAlignTL->isChecked())
+        _data->alignment = TL;
+    else if(ui->radioAlignT->isChecked())
+        _data->alignment = T;
+    else if(ui->radioAlignTR->isChecked())
+        _data->alignment = TR;
+    else if(ui->radioAlignL->isChecked())
+        _data->alignment = L;
+    else if(ui->radioAlignC->isChecked())
+        _data->alignment = C;
+    else if(ui->radioAlignR->isChecked())
+        _data->alignment = R;
+    else if(ui->radioAlignBL->isChecked())
+        _data->alignment = BL;
+    else if(ui->radioAlignB->isChecked())
+        _data->alignment = B;
+    else if(ui->radioAlignBR->isChecked())
+        _data->alignment = BR;
+
+    if(ui->radioBorderShadow->isChecked())
+        _data->border = bShadow;
+    else if(ui->radioBorderBox->isChecked())
+        _data->border = bBox;
 }

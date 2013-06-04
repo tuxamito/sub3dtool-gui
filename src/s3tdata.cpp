@@ -19,13 +19,20 @@
 
 #include "s3tdata.h"
 
-#define DEFMARGINL 10
-#define DEFMARGINR 10
-#define DEFMARGINV 0
-#define DEFALIGNMENT B
 #define DEFFONTSIZE 64
 #define DEFFONT "FreeSans"
 #define DEFRESOLUTION "1920x1080"
+
+#define DEFMARGINL 10
+#define DEFMARGINR 10
+#define DEFMARGINV 0
+
+#define DEFALIGNMENT B
+
+#define DEFBORDER bShadow
+
+#define DEFOUTLINE 0
+#define DEFSHADOW 0
 
 #define DEFCOLORPRIMARYR 0xFF
 #define DEFCOLORPRIMARYG 0xFF
@@ -65,9 +72,14 @@ s3tData::s3tData()
 
     alignment = DEFALIGNMENT;
 
+    border = DEFBORDER;
+
     marginL = DEFMARGINL;
     marginR = DEFMARGINR;
     marginV = DEFMARGINV;
+
+    outline = DEFOUTLINE;
+    shadow = DEFSHADOW;
 
     cPrimary.r = DEFCOLORPRIMARYR;
     cPrimary.g = DEFCOLORPRIMARYG;
