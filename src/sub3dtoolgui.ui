@@ -491,7 +491,7 @@
    <sender>lineEditFileIn</sender>
    <signal>editingFinished()</signal>
    <receiver>sub3dtoolgui</receiver>
-   <slot>filesChanged()</slot>
+   <slot>filesChangedIn()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>182</x>
@@ -507,7 +507,7 @@
    <sender>lineEditFileOut</sender>
    <signal>editingFinished()</signal>
    <receiver>sub3dtoolgui</receiver>
-   <slot>filesChanged()</slot>
+   <slot>filesChangedOut()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>182</x>
@@ -658,12 +658,13 @@
   <slot>change3DModeTB()</slot>
   <slot>change3DModeN3D()</slot>
   <slot>convert()</slot>
-  <slot>filesChanged()</slot>
+  <slot>filesChangedIn()</slot>
   <slot>setFontSize(QString)</slot>
   <slot>setResolution(QString)</slot>
   <slot>setFont(QString)</slot>
   <slot>showAbout()</slot>
   <slot>exit()</slot>
   <slot>showAdvance()</slot>
+  <slot>filesChangedOut()</slot>
  </slots>
 </ui>

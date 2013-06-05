@@ -28,8 +28,8 @@
 
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
-#define VERSION "0.0.0"
-#define DATE "04.06.2013"
+#define VERSION "0.1.0-rc1"
+#define DATE "05.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -131,21 +131,33 @@ void sub3dtoolgui::initGui()
     ui->fontComboBox->setCurrentIndex(ui->fontComboBox->findText(_data.font));
 }
 
-void sub3dtoolgui::filesChanged()
+void sub3dtoolgui::filesChangedIn()
 {
     _data.inFile = ui->lineEditFileIn->text();
+    if(_data.inFile.endsWith(".srt"))
+    {
+        _data.outFile = _data.inFile;
+        _data.outFile.chop(3);
+        _data.outFile += "ass";
+        ui->lineEditFileOut->setText(_data.outFile);
+    }
+}
+
+void sub3dtoolgui::filesChangedOut()
+{
     _data.outFile = ui->lineEditFileOut->text();
 }
 
 void sub3dtoolgui::getFileIn()
 {
-    emit(newStatus("bbb"));
-
     QString fileName = QFileDialog::getOpenFileName(this, tr("Original Subtitles"), ui->lineEditFileIn->text(),
                                                     tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 
     if(fileName != "")
+    {
         ui->lineEditFileIn->setText(fileName);
+        this->filesChangedIn();
+    }
 }
 
 void sub3dtoolgui::getFileOut()
@@ -154,7 +166,10 @@ void sub3dtoolgui::getFileOut()
                                                     tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 
     if(fileName != "")
+    {
         ui->lineEditFileOut->setText(fileName);
+        this->filesChangedOut();
+    }
 }
 
 void sub3dtoolgui::change3DModeSBS()
@@ -228,6 +243,13 @@ void sub3dtoolgui::convert()
     QProcess tool;
     QStringList arguments;
 
+    if(_data.outFile == _data.inFile)
+    {
+        int ret = QMessageBox::question(this, MYNAME, tr("Original subtitle will be overwritten! Continue?"), QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+    }
+
     switch(_data.transformation3d)
     {
     case N3D:
@@ -247,7 +269,6 @@ void sub3dtoolgui::convert()
     arguments << _data.font;
     arguments << "--fontsize";
     arguments << QString::number(_data.fontSize);
-
 
     arguments << "--color-primary";
     arguments << "0x" + QString::number(_data.cPrimary.r, 16) +
@@ -344,7 +365,7 @@ void sub3dtoolgui::convert()
     if(code)
         QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
     else
-        QMessageBox::information(this, MYNAME, tr("Subtitles converted"));
+        QMessageBox::information(this, MYNAME, tr("Subtitles successfully converted!"));
 }
 
 void sub3dtoolgui::showAbout()

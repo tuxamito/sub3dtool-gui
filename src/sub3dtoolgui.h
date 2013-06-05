@@ -44,7 +44,8 @@ private slots:
     void change3DModeTB();
     void change3DModeN3D();
     void convert();
-    void filesChanged();
+    void filesChangedIn();
+    void filesChangedOut();
     void setFontSize(QString size);
     void setResolution(QString resolution);
     void setFont(QString font);
