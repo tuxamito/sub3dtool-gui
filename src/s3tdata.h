@@ -42,8 +42,6 @@ public:
     ~s3tData();
 
     type3d transformation3d;
-    QString inFile;
-    QString outFile;
     QString resolution;
     QString font;
     int fontSize;

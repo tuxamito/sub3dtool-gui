@@ -54,18 +54,6 @@ s3tData::s3tData()
 {
     transformation3d = N3D;
 
-    char *defaultDir = getenv("HOME");
-    if(defaultDir != NULL)
-    {
-        inFile = QString(defaultDir) + "/";
-        outFile = QString(defaultDir) + "/";
-    }
-    else
-    {
-        inFile = "/";
-        outFile = "/";
-    }
-
     resolution = DEFRESOLUTION;
     font = DEFFONT;
     fontSize = DEFFONTSIZE;

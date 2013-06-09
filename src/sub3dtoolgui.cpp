@@ -82,8 +82,20 @@ void sub3dtoolgui::initGui()
     else
         emit(newStatus(QString(SUB3DTOOLNAME) + QString(" ") + tr("not found")));
 
-    ui->lineEditFileIn->setText(_data.inFile);
-    ui->lineEditFileOut->setText(_data.outFile);
+    char *defaultDir = getenv("HOME");
+    if(defaultDir != NULL)
+    {
+        this->_inFile = QString(defaultDir) + "/";
+        this->_outFile = QString(defaultDir) + "/";
+    }
+    else
+    {
+        this->_inFile = "/";
+        this->_outFile = "/";
+    }
+
+    ui->lineEditFileIn->setText(this->_inFile);
+    ui->lineEditFileOut->setText(this->_outFile);
 
     _fontBold = ui->label3DSBS->font();
     _fontBold.setBold(true);
@@ -134,19 +146,19 @@ void sub3dtoolgui::initGui()
 
 void sub3dtoolgui::filesChangedIn()
 {
-    _data.inFile = ui->lineEditFileIn->text();
-    if(_data.inFile.endsWith(".srt"))
+    this->_inFile = ui->lineEditFileIn->text();
+    if(this->_inFile.endsWith(".srt"))
     {
-        _data.outFile = _data.inFile;
-        _data.outFile.chop(3);
-        _data.outFile += "ass";
-        ui->lineEditFileOut->setText(_data.outFile);
+        this->_outFile = this->_inFile;
+        this->_outFile.chop(3);
+        this->_outFile += "ass";
+        ui->lineEditFileOut->setText(this->_outFile);
     }
 }
 
 void sub3dtoolgui::filesChangedOut()
 {
-    _data.outFile = ui->lineEditFileOut->text();
+    this->_outFile = ui->lineEditFileOut->text();
 }
 
 void sub3dtoolgui::getFileIn()
@@ -239,45 +251,12 @@ void sub3dtoolgui::setFont(QString font)
         _data.font = font;
 }
 
-void sub3dtoolgui::convert()
+int sub3dtoolgui::subtitleConvert(QString inFile, QString outFile, s3tData data)
 {
     QProcess tool;
     QStringList arguments;
 
-    if(!QFileInfo(_data.inFile).exists())
-    {
-        QMessageBox::critical(this, MYNAME, tr("ERROR: The file\n%1\ndoes not exist.").arg(_data.inFile));
-        return;
-    }
-
-    if(QFileInfo(_data.inFile).isDir())
-    {
-        QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(_data.inFile));
-        return;
-    }
-
-    if(_data.outFile == _data.inFile)
-    {
-        int ret = QMessageBox::question(this, MYNAME, tr("Original subtitle will be overwritten! Continue?"), QMessageBox::Yes, QMessageBox::No);
-        if(ret == QMessageBox::No)
-            return;
-    }
-    else if(QFileInfo(_data.outFile).exists())
-    {
-        if(QFileInfo(_data.outFile).isFile())
-        {
-            int ret = QMessageBox::question(this, MYNAME, tr("The destination file already exists! Continue?"), QMessageBox::Yes, QMessageBox::No);
-            if(ret == QMessageBox::No)
-                return;
-        }
-        else
-        {
-            QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(_data.inFile));
-            return;
-        }
-    }
-
-    switch(_data.transformation3d)
+    switch(data.transformation3d)
     {
     case N3D:
         arguments << "--no3d";
@@ -291,35 +270,35 @@ void sub3dtoolgui::convert()
     }
 
     arguments << "--screen";
-    arguments << _data.resolution;
+    arguments << data.resolution;
     arguments << "--font";
-    arguments << _data.font;
+    arguments << data.font;
     arguments << "--fontsize";
-    arguments << QString::number(_data.fontSize);
+    arguments << QString::number(data.fontSize);
 
     arguments << "--color-primary";
-    arguments << "0x" + QString::number(_data.cPrimary.r, 16) +
-                 QString::number(_data.cPrimary.g, 16) + QString::number(_data.cPrimary.b, 16);
+    arguments << "0x" + QString::number(data.cPrimary.r, 16) +
+                 QString::number(data.cPrimary.g, 16) + QString::number(data.cPrimary.b, 16);
 
     arguments << "--color-2nd";
-    arguments << "0x" + QString::number(_data.cSecondary.r, 16) +
-                 QString::number(_data.cSecondary.g, 16) + QString::number(_data.cSecondary.b, 16);
+    arguments << "0x" + QString::number(data.cSecondary.r, 16) +
+                 QString::number(data.cSecondary.g, 16) + QString::number(data.cSecondary.b, 16);
 
     arguments << "--color-outline";
-    arguments << "0x" + QString::number(_data.cOutline.r, 16) +
-                 QString::number(_data.cOutline.g, 16) + QString::number(_data.cOutline.b, 16);
+    arguments << "0x" + QString::number(data.cOutline.r, 16) +
+                 QString::number(data.cOutline.g, 16) + QString::number(data.cOutline.b, 16);
 
     arguments << "--color-back";
-    arguments << "0x" + QString::number(_data.cBack.r, 16) +
-                 QString::number(_data.cBack.g, 16) + QString::number(_data.cBack.b, 16);
+    arguments << "0x" + QString::number(data.cBack.r, 16) +
+                 QString::number(data.cBack.g, 16) + QString::number(data.cBack.b, 16);
 
     arguments << "--outline";
-    arguments << QString::number(_data.outline);
+    arguments << QString::number(data.outline);
 
     arguments << "--shadow";
-    arguments << QString::number(_data.shadow);
+    arguments << QString::number(data.shadow);
 
-    switch(_data.alignment)
+    switch(data.alignment)
     {
     case TL:
         arguments << "--align-top";
@@ -362,37 +341,82 @@ void sub3dtoolgui::convert()
     }
 
     arguments << "--margin-left";
-    arguments << QString::number(_data.marginL);
+    arguments << QString::number(data.marginL);
     arguments << "--margin-right";
-    arguments << QString::number(_data.marginR);
+    arguments << QString::number(data.marginR);
     arguments << "--margin-vertical";
-    arguments << QString::number(_data.marginV);
+    arguments << QString::number(data.marginV);
 
     arguments << "-o";
-    arguments << _data.outFile;
-    arguments << _data.inFile;
+    arguments << outFile;
+    arguments << inFile;
 
     tool.start(SUB3DTOOLNAME, arguments);
 
     if (!tool.waitForStarted())
-    {
-        QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool"));
-        return;
-    }
-
+        return -501;
 
     if (!tool.waitForFinished())
-    {
-        QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool"));
-        return;
-    }
+        return -502;
 
     int code = tool.exitCode();
 
-    if(code)
-        QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
-    else
+    return code;
+}
+
+void sub3dtoolgui::convert()
+{
+    if(!QFileInfo(this->_inFile).exists())
+    {
+        QMessageBox::critical(this, MYNAME, tr("ERROR: The file\n%1\ndoes not exist.").arg(this->_inFile));
+        return;
+    }
+
+    if(QFileInfo(this->_inFile).isDir())
+    {
+        QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(this->_inFile));
+        return;
+    }
+
+    if(this->_outFile == this->_inFile)
+    {
+        int ret = QMessageBox::question(this, MYNAME, tr("Original subtitle will be overwritten! Continue?"), QMessageBox::Yes, QMessageBox::No);
+        if(ret == QMessageBox::No)
+            return;
+    }
+    else if(QFileInfo(this->_outFile).exists())
+    {
+        if(QFileInfo(this->_outFile).isFile())
+        {
+            int ret = QMessageBox::question(this, MYNAME, tr("The destination file already exists! Continue?"), QMessageBox::Yes, QMessageBox::No);
+            if(ret == QMessageBox::No)
+                return;
+        }
+        else
+        {
+            QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(this->_inFile));
+            return;
+        }
+    }
+
+    int code = this->subtitleConvert(this->_inFile, this->_outFile, this->_data);
+
+
+    switch(code)
+    {
+    case 0:
         QMessageBox::information(this, MYNAME, tr("Subtitles successfully converted!"));
+        break;
+    case -501:
+        QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool"));
+        break;
+    case -502:
+        QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool"));
+        break;
+    default:
+        QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
+        break;
+    }
 }
 
 void sub3dtoolgui::showAbout()

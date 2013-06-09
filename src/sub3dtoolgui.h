@@ -62,12 +62,16 @@ private:
 
     int checkTool();
     void initGui();
+    int subtitleConvert(QString inFile, QString outFile, s3tData data);
 
     bool _isStarted;
     s3tData _data;
     bool _toolFound;
     QFont _fontBold;
     QFont _fontNotBold;
+
+    QString _inFile;
+    QString _outFile;
 };
 
 #endif // SUB3DTOOLGUI_H
