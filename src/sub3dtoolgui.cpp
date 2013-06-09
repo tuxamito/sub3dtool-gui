@@ -28,6 +28,7 @@
 
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
+
 #define VERSION "0.1.80"
 #define DATE "09.06.2013"
 
@@ -243,11 +244,37 @@ void sub3dtoolgui::convert()
     QProcess tool;
     QStringList arguments;
 
+    if(!QFileInfo(_data.inFile).exists())
+    {
+        QMessageBox::critical(this, MYNAME, tr("ERROR: The file\n%1\ndoes not exist.").arg(_data.inFile));
+        return;
+    }
+
+    if(QFileInfo(_data.inFile).isDir())
+    {
+        QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(_data.inFile));
+        return;
+    }
+
     if(_data.outFile == _data.inFile)
     {
         int ret = QMessageBox::question(this, MYNAME, tr("Original subtitle will be overwritten! Continue?"), QMessageBox::Yes, QMessageBox::No);
         if(ret == QMessageBox::No)
             return;
+    }
+    else if(QFileInfo(_data.outFile).exists())
+    {
+        if(QFileInfo(_data.outFile).isFile())
+        {
+            int ret = QMessageBox::question(this, MYNAME, tr("The destination file already exists! Continue?"), QMessageBox::Yes, QMessageBox::No);
+            if(ret == QMessageBox::No)
+                return;
+        }
+        else
+        {
+            QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg(_data.inFile));
+            return;
+        }
     }
 
     switch(_data.transformation3d)
