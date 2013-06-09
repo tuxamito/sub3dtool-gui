@@ -20,24 +20,25 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "sub3dtoolgui.h"
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+    g = new sub3dtoolgui;
 
-    connect(this->centralWidget(), SIGNAL(closeProgram()), this, SLOT(close()));
-    connect(this->centralWidget(), SIGNAL(newStatus(QString)), ui->statusBar, SLOT(showMessage(QString)));
+    connect(g, SIGNAL(closeProgram()), this, SLOT(close()));
+    connect(g, SIGNAL(newStatus(QString)), ui->statusBar, SLOT(showMessage(QString)));
 
-    sub3dtoolgui *g = (sub3dtoolgui*) this->centralWidget();
     g->init();
+
+    this->setCentralWidget(g);
+    this->layout()->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete g;
 }

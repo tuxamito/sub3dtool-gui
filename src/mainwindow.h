@@ -21,6 +21,9 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QHBoxLayout>
+
+#include "sub3dtoolgui.h"
 
 namespace Ui {
 class MainWindow;
@@ -36,6 +39,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    sub3dtoolgui *g;
 };
 
 #endif // MAINWINDOW_H

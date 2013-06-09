@@ -23,14 +23,13 @@
    <iconset resource="sub3dtool-gui-images.qrc">
     <normaloff>:/icons/images/logo_sub3dtool.png</normaloff>:/icons/images/logo_sub3dtool.png</iconset>
   </property>
-  <widget class="sub3dtoolgui" name="widget">
+  <widget class="QWidget" name="widget">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar">
    <property name="sizeGripEnabled">
@@ -39,14 +38,6 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>sub3dtoolgui</class>
-   <extends>QWidget</extends>
-   <header location="global">sub3dtoolgui.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="sub3dtool-gui-images.qrc"/>
  </resources>
