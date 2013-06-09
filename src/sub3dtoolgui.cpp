@@ -28,8 +28,8 @@
 
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
-#define VERSION "0.1.0-rc1"
-#define DATE "05.06.2013"
+#define VERSION "0.1.0"
+#define DATE "09.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
