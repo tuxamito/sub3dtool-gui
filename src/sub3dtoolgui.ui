@@ -110,6 +110,16 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <column>
+          <property name="text">
+           <string>InFile</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>OutFile</string>
+          </property>
+         </column>
         </widget>
        </item>
        <item>
