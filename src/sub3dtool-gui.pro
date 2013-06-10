@@ -21,7 +21,8 @@ SOURCES += main.cpp\
 HEADERS  += sub3dtoolgui.h \
     s3tdata.h \
     mainwindow.h \
-    sub3dtoolguiadvance.h
+    sub3dtoolguiadvance.h \
+    s3tsubconf.h
 
 FORMS    += sub3dtoolgui.ui \
     mainwindow.ui \

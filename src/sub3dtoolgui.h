@@ -53,6 +53,9 @@ private slots:
     void showAdvance();
     void exit();
 
+    void removeMultipleFiles();
+    void addMultipleFiles();
+
 signals:
     void closeProgram();
     void newStatus(QString);

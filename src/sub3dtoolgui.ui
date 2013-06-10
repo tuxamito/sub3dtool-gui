@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>395</width>
-    <height>564</height>
+    <width>462</width>
+    <height>577</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -115,14 +115,14 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QPushButton" name="pushButton_2">
+          <widget class="QPushButton" name="buttonAddMultipleFiles">
            <property name="text">
             <string>Add</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="buttonRemoveMultpleFiles">
            <property name="text">
             <string>Remove</string>
            </property>
@@ -709,6 +709,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAddMultipleFiles</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>addMultipleFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>63</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonRemoveMultpleFiles</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>removeMultipleFiles()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>398</x>
+     <y>96</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>closeProgram()</signal>
@@ -728,5 +760,7 @@
   <slot>exit()</slot>
   <slot>showAdvance()</slot>
   <slot>filesChangedOut()</slot>
+  <slot>addMultipleFiles()</slot>
+  <slot>removeMultipleFiles()</slot>
  </slots>
 </ui>

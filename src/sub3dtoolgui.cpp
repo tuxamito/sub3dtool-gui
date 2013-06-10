@@ -441,3 +441,13 @@ void sub3dtoolgui::exit()
 {
     emit closeProgram();
 }
+
+void sub3dtoolgui::removeMultipleFiles()
+{
+
+}
+
+void sub3dtoolgui::addMultipleFiles()
+{
+
+}
