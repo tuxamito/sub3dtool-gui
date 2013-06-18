@@ -30,7 +30,7 @@
    <item>
     <widget class="QTabWidget" name="tabFilesSelect">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="tabSingleFile">
       <attribute name="title">
@@ -103,13 +103,18 @@
       </attribute>
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QTableWidget" name="tableWidget">
+        <widget class="QTableWidget" name="table">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <column>
+          <property name="text">
+           <string>index</string>
+          </property>
+         </column>
          <column>
           <property name="text">
            <string>InFile</string>
@@ -127,7 +132,16 @@
          <item>
           <widget class="QPushButton" name="buttonAddMultipleFiles">
            <property name="text">
-            <string>Add</string>
+            <string>Add
+Files</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="buttonAddMultipleDir">
+           <property name="text">
+            <string>Add
+Directories</string>
            </property>
           </widget>
          </item>
@@ -751,6 +765,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>buttonAddMultipleDir</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>addMultipleDir()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>393</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>230</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>closeProgram()</signal>
@@ -772,5 +802,6 @@
   <slot>filesChangedOut()</slot>
   <slot>addMultipleFiles()</slot>
   <slot>removeMultipleFiles()</slot>
+  <slot>addMultipleDir()</slot>
  </slots>
 </ui>

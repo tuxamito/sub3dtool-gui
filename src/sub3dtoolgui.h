@@ -23,6 +23,7 @@
 #include <QWidget>
 
 #include "s3tdata.h"
+#include "s3tsubconf.h"
 
 namespace Ui {
 class sub3dtoolgui;
@@ -55,6 +56,8 @@ private slots:
 
     void removeMultipleFiles();
     void addMultipleFiles();
+    void addMultipleDir();
+    void updateFileTable();
 
 signals:
     void closeProgram();
@@ -75,6 +78,9 @@ private:
 
     QString _inFile;
     QString _outFile;
+
+    QList<struct s3tSubConf> _files;
+    unsigned long long _fi;
 };
 
 #endif // SUB3DTOOLGUI_H

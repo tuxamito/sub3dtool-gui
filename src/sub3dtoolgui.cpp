@@ -30,7 +30,7 @@
 #define MYNAME "sub3dtool-gui"
 
 #define VERSION "0.1.80"
-#define DATE "10.06.2013"
+#define DATE "17.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -41,6 +41,11 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     ui->setupUi(this);
 
     this->layout()->setSizeConstraint(QLayout::SetFixedSize);
+
+    ui->table->hideColumn(0);
+    this->updateFileTable();
+
+    _fi = 0;
 }
 
 sub3dtoolgui::~sub3dtoolgui()
@@ -442,12 +447,59 @@ void sub3dtoolgui::exit()
     emit closeProgram();
 }
 
-void sub3dtoolgui::removeMultipleFiles()
+void sub3dtoolgui::updateFileTable()
 {
+    QList<struct s3tSubConf>::iterator i;
+    int _i = 0;
 
+    ui->table->clearContents();
+    ui->table->setRowCount(_files.size());
+
+    for(i=_files.begin(); i!=_files.end(); ++i)
+    {
+        QTableWidgetItem *newItem1 = new QTableWidgetItem((*i).inFile);
+        QTableWidgetItem *newItem2 = new QTableWidgetItem((*i).i);
+        ui->table->setItem(_i, 1, newItem1);
+        ui->table->setItem(_i, 0, newItem2);
+        ++_i;
+    }
+}
+
+
+void sub3dtoolgui::removeMultipleFiles()
+{        
+    QList<QTableWidgetItem *> elements = ui->table->selectedItems();
+    QList<int> rows;
+
+    QList<QTableWidgetItem *>::iterator i;
+    for(i=elements.begin(); i!=elements.end(); ++i)
+    {
+        int r = (*i)->row();
+        //ui->table->cellWidget(r, 0)->
+        if(rows.indexOf(r) == -1)
+            rows.append(r);
+    }
+
+    qSort(rows);
+
+    this->updateFileTable();
 }
 
 void sub3dtoolgui::addMultipleFiles()
 {
+    QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Original Subtitles"), ui->lineEditFileIn->text(),
+                                                          tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 
+    while(!fileNames.isEmpty())
+    {
+        struct s3tSubConf nf;
+        nf.inFile = fileNames.takeFirst();
+    }
+
+    this->updateFileTable();
+}
+
+void sub3dtoolgui::addMultipleDir()
+{
+    this->updateFileTable();
 }
