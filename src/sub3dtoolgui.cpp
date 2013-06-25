@@ -30,7 +30,7 @@
 #define MYNAME "sub3dtool-gui"
 
 #define VERSION "0.1.80"
-#define DATE "17.06.2013"
+#define DATE "25.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -458,13 +458,12 @@ void sub3dtoolgui::updateFileTable()
     for(i=_files.begin(); i!=_files.end(); ++i)
     {
         QTableWidgetItem *newItem1 = new QTableWidgetItem((*i).inFile);
-        QTableWidgetItem *newItem2 = new QTableWidgetItem((*i).i);
+        QTableWidgetItem *newItem2 = new QTableWidgetItem(QString::number((*i).index));
         ui->table->setItem(_i, 1, newItem1);
         ui->table->setItem(_i, 0, newItem2);
         ++_i;
     }
 }
-
 
 void sub3dtoolgui::removeMultipleFiles()
 {        
@@ -475,14 +474,49 @@ void sub3dtoolgui::removeMultipleFiles()
     for(i=elements.begin(); i!=elements.end(); ++i)
     {
         int r = (*i)->row();
-        //ui->table->cellWidget(r, 0)->
         if(rows.indexOf(r) == -1)
             rows.append(r);
     }
 
-    qSort(rows);
+    QSet<int> rowList = rows.toSet();
+    QSet<int>::iterator j;
+    for(j=rowList.begin(); j!=rowList.end(); ++j)
+    {
+        QTableWidgetItem *e = (ui->table->item((*j), 0));
+        unsigned long long code = e->text().toULongLong();
+        this->removeFileFromList(code);
+    }
 
     this->updateFileTable();
+}
+
+bool sub3dtoolgui::removeFileFromList(unsigned long long index)
+{
+    int j = 0;
+    QList<struct s3tSubConf>::iterator i;
+    for(i=_files.begin(); i!=_files.end(); ++i)
+    {
+        if((*i).index == index)
+        {
+            _files.removeAt(j);
+            return true;
+        }
+        j++;
+    }
+    return false;
+}
+
+bool sub3dtoolgui::addFileToList(struct s3tSubConf nf)
+{
+    QList<struct s3tSubConf>::iterator i;
+    for(i=_files.begin(); i!=_files.end(); ++i)
+    {
+        if((*i).inFile == nf.inFile)
+            return false;
+    }
+
+    _files.append(nf);
+    return true;
 }
 
 void sub3dtoolgui::addMultipleFiles()
@@ -494,6 +528,8 @@ void sub3dtoolgui::addMultipleFiles()
     {
         struct s3tSubConf nf;
         nf.inFile = fileNames.takeFirst();
+        nf.index = _fi++;
+        this->addFileToList(nf);
     }
 
     this->updateFileTable();

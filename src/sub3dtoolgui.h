@@ -69,6 +69,8 @@ private:
     int checkTool();
     void initGui();
     int subtitleConvert(QString inFile, QString outFile, s3tData data);
+    bool addFileToList(struct s3tSubConf);
+    bool removeFileFromList(unsigned long long index);
 
     bool _isStarted;
     s3tData _data;

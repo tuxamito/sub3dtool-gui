@@ -27,7 +27,7 @@ struct s3tSubConf {
     QString inFile;
     QString outFile;
     s3tData data;
-    unsigned long long i;
+    unsigned long long index;
 };
 
 #endif // S3TSUBCONF_H
