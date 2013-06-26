@@ -427,7 +427,7 @@ void sub3dtoolgui::convert()
 void sub3dtoolgui::showAbout()
 {
     QString str;
-    str = QString("%1 %2\n(c) Daniel Rubio Bonilla\n<danielrubiob@gmail.com>\nGPL v3").arg(MYNAME).arg(VERSION);
+    str = QString("<center>%1 %2 - %3<br>(c)2013 Daniel Rubio Bonilla<br>danielrubiob@gmail.com<br>GPL v3</center>").arg(MYNAME).arg(VERSION).arg(DATE);
     QMessageBox::about(this, MYNAME, str);
 }
 
