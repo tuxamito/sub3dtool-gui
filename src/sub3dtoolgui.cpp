@@ -459,6 +459,14 @@ void sub3dtoolgui::convertSingleFile()
 
 void sub3dtoolgui::convertManyFiles()
 {
+    int answer;
+    bool ignoreExists = false;
+    bool ignoreDirs = false;
+    bool ignoreOverwrite = false;
+    bool ignoreReplace = false;
+    bool ignoreDirsOut = false;
+    bool execute;
+
     QList<int> errorShow;
 
     int correct = 0;
@@ -466,14 +474,79 @@ void sub3dtoolgui::convertManyFiles()
 
     for(i=_files.begin(); i!=_files.end(); ++i)
     {
-        int code = this->subtitleConvert((*i).inFile, (*i).outFile, this->_data);
-        if(code)
+        execute = true;
+
+        if(!QFileInfo((*i).inFile).exists())
         {
-            this->analyzeToolCodeManyFiles(code, (*i).inFile, &errorShow);
+            if(!ignoreExists)
+            {
+                answer = QMessageBox::critical(this, MYNAME, tr("ERROR: The file\n%1\ndoes not exist.").arg((*i).inFile), QMessageBox::Ignore, QMessageBox::Ok, QMessageBox::Cancel);
+                if(answer == QMessageBox::Ignore)
+                    ignoreExists = true;
+                else if(answer == QMessageBox::Cancel)
+                    return;
+            }
+            execute = false;
         }
-        else
+
+        if(QFileInfo((*i).inFile).isDir())
         {
-            correct++;
+            if(!ignoreDirs)
+            {
+                answer = QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg((*i).inFile), QMessageBox::Ignore, QMessageBox::Ok, QMessageBox::Cancel);
+                if(answer == QMessageBox::Ignore)
+                    ignoreDirs = true;
+                else if(answer == QMessageBox::Cancel)
+                    return;
+            }
+            execute = false;
+        }
+
+        if((*i).inFile == (*i).outFile)
+        {
+            if(!ignoreOverwrite)
+            {
+                answer = QMessageBox::question(this, MYNAME, tr("Original subtitle<br>%1<br>will be overwritten! Continue?").arg((*i).inFile), QMessageBox::Yes, QMessageBox::YesToAll, QMessageBox::No);
+                if(answer == QMessageBox::YesToAll)
+                    ignoreOverwrite = true;
+                else if(answer == QMessageBox::No)
+                    execute = false;
+            }
+        }
+        else if(QFileInfo((*i).outFile).exists())
+        {
+            if(QFileInfo((*i).outFile).isFile())
+            {
+                if(!ignoreReplace)
+                {
+                    answer = QMessageBox::question(this, MYNAME, tr("The destination file<br>%1<br>already exists and will be overwritten! Continue?").arg((*i).inFile), QMessageBox::Yes, QMessageBox::YesToAll, QMessageBox::No);
+                    if(answer == QMessageBox::YesToAll)
+                        ignoreReplace = true;
+                    else if(answer == QMessageBox::No)
+                        execute = false;
+                }
+            }
+            else
+            {
+                if(!ignoreDirsOut)
+                {
+                    answer = QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis a directory, not a file.").arg((*i).inFile), QMessageBox::Ignore, QMessageBox::Ok, QMessageBox::Cancel);
+                    if(answer == QMessageBox::Ignore)
+                        ignoreDirsOut = true;
+                    else if(answer == QMessageBox::Cancel)
+                        return;
+                }
+                execute = false;
+            }
+        }
+
+        if(execute)
+        {
+            int code = this->subtitleConvert((*i).inFile, (*i).outFile, this->_data);
+            if(code)
+                this->analyzeToolCodeManyFiles(code, (*i).inFile, &errorShow);
+            else
+                correct++;
         }
     }
 
@@ -605,6 +678,10 @@ void sub3dtoolgui::addMultipleFiles()
             nf.outFile = nf.inFile;
             nf.outFile.chop(3);
             nf.outFile += "ass";
+        }
+        else if(nf.inFile.endsWith(".ass") || nf.inFile.endsWith(".ssa"))
+        {
+            nf.outFile = nf.inFile;
         }
         nf.index = _fi++;
         this->addFileToList(nf);
