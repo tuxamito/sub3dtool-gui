@@ -71,6 +71,10 @@ private:
     int subtitleConvert(QString inFile, QString outFile, s3tData data);
     bool addFileToList(struct s3tSubConf);
     bool removeFileFromList(unsigned long long index);
+    void convertSingleFile();
+    void convertManyFiles();
+    void analyzeToolCodeSingleFile(int code);
+    void analyzeToolCodeManyFiles(int code, QString file, QList<int> *errorShow);
 
     bool _isStarted;
     s3tData _data;

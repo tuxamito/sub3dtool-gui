@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>462</width>
+    <width>466</width>
     <height>577</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
    <item>
     <widget class="QTabWidget" name="tabFilesSelect">
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="tabSingleFile">
       <attribute name="title">
@@ -110,6 +110,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
          <column>
           <property name="text">
            <string>index</string>
@@ -117,12 +123,12 @@
          </column>
          <column>
           <property name="text">
-           <string>InFile</string>
+           <string>In Files</string>
           </property>
          </column>
          <column>
           <property name="text">
-           <string>OutFile</string>
+           <string>Out Files</string>
           </property>
          </column>
         </widget>

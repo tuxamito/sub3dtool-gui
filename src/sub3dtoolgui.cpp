@@ -29,8 +29,8 @@
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
 
-#define VERSION "0.1.80"
-#define DATE "25.06.2013"
+#define VERSION "0.1.81"
+#define DATE "26.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -369,7 +369,49 @@ int sub3dtoolgui::subtitleConvert(QString inFile, QString outFile, s3tData data)
     return code;
 }
 
-void sub3dtoolgui::convert()
+void sub3dtoolgui::analyzeToolCodeSingleFile(int code)
+{
+    switch(code)
+    {
+    case -501:
+        QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool"));
+        break;
+    case -502:
+        QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool"));
+        break;
+    default:
+        QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
+        break;
+    }
+}
+
+void sub3dtoolgui::analyzeToolCodeManyFiles(int code, QString file, QList<int> *errorShow)
+{
+    int answer;
+
+    if(errorShow->contains(code))
+        return;
+
+    switch(code)
+    {
+    case -501:
+        answer = QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool when converting file:<br>%1").arg(file), QMessageBox::Ignore, QMessageBox::Ok);
+        break;
+    case -502:
+        answer = QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool when converting file:<br>%1").arg(file), QMessageBox::Ignore, QMessageBox::Ok);
+        break;
+    default:
+        answer = QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1<br>when converting file:<br>%2").arg(QString::number(code)).arg(file), QMessageBox::Ignore, QMessageBox::Ok);
+        break;
+    }
+
+    if(answer == QMessageBox::Ignore)
+    {
+        errorShow->append(code);
+    }
+}
+
+void sub3dtoolgui::convertSingleFile()
 {
     if(!QFileInfo(this->_inFile).exists())
     {
@@ -405,22 +447,48 @@ void sub3dtoolgui::convert()
     }
 
     int code = this->subtitleConvert(this->_inFile, this->_outFile, this->_data);
-
-
-    switch(code)
+    if(code)
     {
-    case 0:
+        this->analyzeToolCodeSingleFile(code);
+    }
+    else
+    {
         QMessageBox::information(this, MYNAME, tr("Subtitles successfully converted!"));
-        break;
-    case -501:
-        QMessageBox::critical(this, MYNAME, tr("ERROR starting the tool"));
-        break;
-    case -502:
-        QMessageBox::critical(this, MYNAME, tr("ERROR executing the tool"));
-        break;
-    default:
-        QMessageBox::critical(this, MYNAME, tr("ERROR tool reported error: %1").arg(QString::number(code)));
-        break;
+    }
+}
+
+void sub3dtoolgui::convertManyFiles()
+{
+    QList<int> errorShow;
+
+    int correct = 0;
+    QList<struct s3tSubConf>::iterator i;
+
+    for(i=_files.begin(); i!=_files.end(); ++i)
+    {
+        int code = this->subtitleConvert((*i).inFile, (*i).outFile, this->_data);
+        if(code)
+        {
+            this->analyzeToolCodeManyFiles(code, (*i).inFile, &errorShow);
+        }
+        else
+        {
+            correct++;
+        }
+    }
+
+    QMessageBox::information(this, MYNAME, tr("%1 out of %2 subtitles files successfully converted!").arg(correct).arg(_files.size()));
+}
+
+void sub3dtoolgui::convert()
+{
+    if(ui->tabFilesSelect->currentIndex() == 0)
+    {
+        this->convertSingleFile();
+    }
+    else if (ui->tabFilesSelect->currentIndex() == 1)
+    {
+        this->convertManyFiles();
     }
 }
 
@@ -457,12 +525,16 @@ void sub3dtoolgui::updateFileTable()
 
     for(i=_files.begin(); i!=_files.end(); ++i)
     {
+        QTableWidgetItem *newItem0 = new QTableWidgetItem(QString::number((*i).index));
         QTableWidgetItem *newItem1 = new QTableWidgetItem((*i).inFile);
-        QTableWidgetItem *newItem2 = new QTableWidgetItem(QString::number((*i).index));
+        QTableWidgetItem *newItem2 = new QTableWidgetItem((*i).outFile);
+        ui->table->setItem(_i, 0, newItem0);
         ui->table->setItem(_i, 1, newItem1);
-        ui->table->setItem(_i, 0, newItem2);
+        ui->table->setItem(_i, 2, newItem2);
         ++_i;
     }
+
+    ui->table->resizeColumnsToContents();
 }
 
 void sub3dtoolgui::removeMultipleFiles()
@@ -528,6 +600,12 @@ void sub3dtoolgui::addMultipleFiles()
     {
         struct s3tSubConf nf;
         nf.inFile = fileNames.takeFirst();
+        if(nf.inFile.endsWith(".srt"))
+        {
+            nf.outFile = nf.inFile;
+            nf.outFile.chop(3);
+            nf.outFile += "ass";
+        }
         nf.index = _fi++;
         this->addFileToList(nf);
     }
