@@ -713,20 +713,24 @@ void sub3dtoolgui::addMultipleDir()
         dirIt->next();
         if (QFileInfo(dirIt->filePath()).isFile())
         {
-            struct s3tSubConf nf;
-            nf.inFile = dirIt->filePath();
-            if(nf.inFile.endsWith(".srt"))
+            if(dirIt->filePath().endsWith(".srt"))
             {
+                struct s3tSubConf nf;
+                nf.inFile = dirIt->filePath();
                 nf.outFile = nf.inFile;
                 nf.outFile.chop(3);
                 nf.outFile += "ass";
+                nf.index = _fi++;
+                this->addFileToList(nf);
             }
-            else if(nf.inFile.endsWith(".ass") || nf.inFile.endsWith(".ssa"))
+            else if(dirIt->filePath().endsWith(".ass") || dirIt->filePath().endsWith(".ssa"))
             {
+                struct s3tSubConf nf;
+                nf.inFile = dirIt->filePath();
                 nf.outFile = nf.inFile;
+                nf.index = _fi++;
+                this->addFileToList(nf);
             }
-            nf.index = _fi++;
-            this->addFileToList(nf);
         }
     }
 
