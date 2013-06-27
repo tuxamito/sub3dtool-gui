@@ -23,14 +23,16 @@
 #include <QProcess>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QDirIterator>
+#include <QDebug>
 
 #include "sub3dtoolguiadvance.h"
 
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
 
-#define VERSION "0.1.81"
-#define DATE "26.06.2013"
+#define VERSION "0.1.82"
+#define DATE "27.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -692,5 +694,41 @@ void sub3dtoolgui::addMultipleFiles()
 
 void sub3dtoolgui::addMultipleDir()
 {
+    QDirIterator *dirIt;
+
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select a directory with subtitles"), ui->lineEditFileIn->text());
+
+    int ret = QMessageBox::question(this, MYNAME, tr("The directory has subdirectories. Do you want to add subtitle files in subdirectories?"), QMessageBox::Yes, QMessageBox::No);
+    if(ret == QMessageBox::Yes)
+    {
+        dirIt = new QDirIterator(dirName, QDirIterator::Subdirectories);
+    }
+    else
+    {
+        dirIt = new QDirIterator(dirName, QDirIterator::NoIteratorFlags);
+    }
+
+    while (dirIt->hasNext())
+    {
+        dirIt->next();
+        if (QFileInfo(dirIt->filePath()).isFile())
+        {
+            struct s3tSubConf nf;
+            nf.inFile = dirIt->filePath();
+            if(nf.inFile.endsWith(".srt"))
+            {
+                nf.outFile = nf.inFile;
+                nf.outFile.chop(3);
+                nf.outFile += "ass";
+            }
+            else if(nf.inFile.endsWith(".ass") || nf.inFile.endsWith(".ssa"))
+            {
+                nf.outFile = nf.inFile;
+            }
+            nf.index = _fi++;
+            this->addFileToList(nf);
+        }
+    }
+
     this->updateFileTable();
 }
