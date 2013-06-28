@@ -24,6 +24,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QDirIterator>
+#include <QDir>
 #include <QDebug>
 
 #include "sub3dtoolguiadvance.h"
@@ -31,8 +32,8 @@
 #define SUB3DTOOLNAME "sub3dtool"
 #define MYNAME "sub3dtool-gui"
 
-#define VERSION "0.1.82"
-#define DATE "27.06.2013"
+#define VERSION "0.1.83"
+#define DATE "28.06.2013"
 
 sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
     QWidget(parent),
@@ -46,6 +47,8 @@ sub3dtoolgui::sub3dtoolgui(QWidget *parent) :
 
     ui->table->hideColumn(0);
     this->updateFileTable();
+
+    this->newPathEnable(ui->checkNewPath->isChecked());
 
     _fi = 0;
 }
@@ -448,6 +451,12 @@ void sub3dtoolgui::convertSingleFile()
         }
     }
 
+    QDir _path(QFileInfo(this->_outFile).path());
+    if(!_path.exists())
+    {
+        _path.mkpath(QFileInfo(this->_outFile).path());
+    }
+
     int code = this->subtitleConvert(this->_inFile, this->_outFile, this->_data);
     if(code)
     {
@@ -544,6 +553,12 @@ void sub3dtoolgui::convertManyFiles()
 
         if(execute)
         {
+            QDir _path(QFileInfo((*i).outFile).path());
+            if(!_path.exists())
+            {
+                _path.mkpath(QFileInfo((*i).outFile).path());
+            }
+
             int code = this->subtitleConvert((*i).inFile, (*i).outFile, this->_data);
             if(code)
                 this->analyzeToolCodeManyFiles(code, (*i).inFile, &errorShow);
@@ -666,24 +681,51 @@ bool sub3dtoolgui::addFileToList(struct s3tSubConf nf)
     return true;
 }
 
+bool sub3dtoolgui::isPathValid()
+{
+    if(!ui->checkNewPath->isChecked())
+        return true;
+
+    QDir dir(ui->lineNewPath->text());
+    if(dir.exists() && ui->lineNewPath->text().trimmed() != "")
+        return true;
+
+    QMessageBox::critical(this, MYNAME, tr("ERROR:\n%1\nis not a valid directory.").arg(ui->lineNewPath->text()));
+
+    return false;
+}
+
 void sub3dtoolgui::addMultipleFiles()
 {
+    if(!this->isPathValid())
+        return;
+
     QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Original Subtitles"), ui->lineEditFileIn->text(),
                                                           tr("All Subtitles (*.srt *.ass *.ssa);;SubRip Subtitles (*.srt);;SubStation Alpha Subtitles(*.ass *.ssa);;All Files(*.*)"));
 
     while(!fileNames.isEmpty())
     {
+        QString path = "";
         struct s3tSubConf nf;
         nf.inFile = fileNames.takeFirst();
+        QFileInfo f(nf.inFile);
+
+        if(ui->checkNewPath->isChecked())
+            path = ui->lineNewPath->text();
+        else
+            path = f.path();
+
+        if(!path.endsWith('/'))
+            path += '/';
+
+
         if(nf.inFile.endsWith(".srt"))
         {
-            nf.outFile = nf.inFile;
-            nf.outFile.chop(3);
-            nf.outFile += "ass";
+            nf.outFile = path + f.completeBaseName() + '.' + "ass";
         }
         else if(nf.inFile.endsWith(".ass") || nf.inFile.endsWith(".ssa"))
         {
-            nf.outFile = nf.inFile;
+            nf.outFile = path + f.fileName();
         }
         nf.index = _fi++;
         this->addFileToList(nf);
@@ -696,7 +738,13 @@ void sub3dtoolgui::addMultipleDir()
 {
     QDirIterator *dirIt;
 
+    if(!this->isPathValid())
+        return;
+
     QString dirName = QFileDialog::getExistingDirectory(this, tr("Select a directory with subtitles"), ui->lineEditFileIn->text());
+
+    if(dirName == "")
+        return;
 
     int ret = QMessageBox::question(this, MYNAME, tr("The directory has subdirectories. Do you want to add subtitle files in subdirectories?"), QMessageBox::Yes, QMessageBox::No);
     if(ret == QMessageBox::Yes)
@@ -713,21 +761,34 @@ void sub3dtoolgui::addMultipleDir()
         dirIt->next();
         if (QFileInfo(dirIt->filePath()).isFile())
         {
+            struct s3tSubConf nf;
+            nf.inFile = dirIt->filePath();
+            QString path = "";
+            QFileInfo f(nf.inFile);
+
+            if(ui->checkNewPath->isChecked())
+            {
+                QString extraPath = f.path().remove(0, dirName.length());
+                path = ui->lineNewPath->text();
+                if(!path.endsWith('/') && !extraPath.startsWith('/'))
+                    path += '/';
+                path += extraPath;
+            }
+            else
+                path = f.path();
+
+            if(!path.endsWith('/'))
+                path += '/';
+
             if(dirIt->filePath().endsWith(".srt"))
             {
-                struct s3tSubConf nf;
-                nf.inFile = dirIt->filePath();
-                nf.outFile = nf.inFile;
-                nf.outFile.chop(3);
-                nf.outFile += "ass";
+                nf.outFile = path + f.completeBaseName() + '.' + "ass";
                 nf.index = _fi++;
                 this->addFileToList(nf);
             }
             else if(dirIt->filePath().endsWith(".ass") || dirIt->filePath().endsWith(".ssa"))
             {
-                struct s3tSubConf nf;
-                nf.inFile = dirIt->filePath();
-                nf.outFile = nf.inFile;
+                nf.outFile = path + f.fileName();
                 nf.index = _fi++;
                 this->addFileToList(nf);
             }
@@ -735,4 +796,17 @@ void sub3dtoolgui::addMultipleDir()
     }
 
     this->updateFileTable();
+}
+
+void sub3dtoolgui::newPathEnable(bool status)
+{
+    ui->buttonNewPath->setEnabled(status);
+    ui->lineNewPath->setEnabled(status);
+}
+
+void sub3dtoolgui::setNewPath()
+{
+    QString dirName = QFileDialog::getExistingDirectory(this, tr("Select a directory to store converted subtitles"), ui->lineEditFileOut->text());
+
+    ui->lineNewPath->setText(dirName);
 }

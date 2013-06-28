@@ -101,78 +101,113 @@
       <attribute name="title">
        <string>Multiple Files</string>
       </attribute>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_5">
        <item>
-        <widget class="QTableWidget" name="table">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="selectionBehavior">
-          <enum>QAbstractItemView::SelectRows</enum>
-         </property>
-         <property name="sortingEnabled">
-          <bool>true</bool>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <column>
-          <property name="text">
-           <string>index</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>In Files</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Out Files</string>
-          </property>
-         </column>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QTableWidget" name="table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+           </property>
+           <property name="sortingEnabled">
+            <bool>true</bool>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <column>
+            <property name="text">
+             <string>index</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>In Files</string>
+            </property>
+           </column>
+           <column>
+            <property name="text">
+             <string>Out Files</string>
+            </property>
+           </column>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QPushButton" name="buttonAddMultipleFiles">
+             <property name="text">
+              <string>Add
+Files</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonAddMultipleDir">
+             <property name="text">
+              <string>Add
+Directories</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonRemoveMultpleFiles">
+             <property name="text">
+              <string>Remove</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QPushButton" name="buttonAddMultipleFiles">
+          <widget class="QCheckBox" name="checkNewPath">
            <property name="text">
-            <string>Add
-Files</string>
+            <string>In Folder:</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonAddMultipleDir">
-           <property name="text">
-            <string>Add
-Directories</string>
-           </property>
-          </widget>
+          <widget class="QLineEdit" name="lineNewPath"/>
          </item>
          <item>
-          <widget class="QPushButton" name="buttonRemoveMultpleFiles">
+          <widget class="QPushButton" name="buttonNewPath">
            <property name="text">
-            <string>Remove</string>
+            <string/>
            </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
+           <property name="icon">
+            <iconset resource="sub3dtool-gui-images.qrc">
+             <normaloff>:/icons/images/folder-documents-icon.png</normaloff>:/icons/images/folder-documents-icon.png</iconset>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="iconSize">
             <size>
-             <width>20</width>
-             <height>40</height>
+             <width>24</width>
+             <height>24</height>
             </size>
            </property>
-          </spacer>
+          </widget>
          </item>
         </layout>
        </item>
@@ -790,6 +825,38 @@ Directories</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>checkNewPath</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>newPathEnable(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>68</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonNewPath</sender>
+   <signal>clicked()</signal>
+   <receiver>sub3dtoolgui</receiver>
+   <slot>setNewPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>421</x>
+     <y>223</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>232</x>
+     <y>288</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <signal>closeProgram()</signal>
@@ -812,5 +879,7 @@ Directories</string>
   <slot>addMultipleFiles()</slot>
   <slot>removeMultipleFiles()</slot>
   <slot>addMultipleDir()</slot>
+  <slot>newPathEnable(bool)</slot>
+  <slot>setNewPath()</slot>
  </slots>
 </ui>

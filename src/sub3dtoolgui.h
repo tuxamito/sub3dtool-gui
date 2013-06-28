@@ -59,6 +59,9 @@ private slots:
     void addMultipleDir();
     void updateFileTable();
 
+    void newPathEnable(bool);
+    void setNewPath();
+
 signals:
     void closeProgram();
     void newStatus(QString);
@@ -75,6 +78,7 @@ private:
     void convertManyFiles();
     void analyzeToolCodeSingleFile(int code);
     void analyzeToolCodeManyFiles(int code, QString file, QList<int> *errorShow);
+    bool isPathValid();
 
     bool _isStarted;
     s3tData _data;
